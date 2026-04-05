@@ -21,69 +21,76 @@
 
 
 
-module ALU_tb;
+module tb_ALU;
 
-parameter WIDTH = 8;
+    reg [31:0] A, B;
+    reg [3:0] ALU_Ctrl;
+    wire [31:0] Result;
+    wire Zero;
 
-reg  [WIDTH-1:0] A, B;
-reg  Alu_control;
-reg  [1:0] alu_control;
-wire [WIDTH-1:0] result;
-wire Cout;
+    ALU uut (
+        .A(A),
+        .B(B),
+        .ALU_Ctrl(ALU_Ctrl),
+        .Result(Result),
+        .Zero(Zero)
+    );
 
-ALU #(WIDTH) uut (
-    .A(A),
-    .B(B),
-    .Alu_control(Alu_control),
-    .alu_control(alu_control),
-    .result(result),
-    .Cout(Cout)
-);
+    initial begin
 
-initial begin
-
-    $monitor("Time=%0t | A=%d B=%d | Alu_ctrl=%b alu_ctrl=%b | Result=%d Cout=%b",
-              $time, A, B, Alu_control, alu_control, result, Cout);
+        A = 32'hF0F0F0F0; 
+        B = 32'h0F0F0F0F; 
+        ALU_Ctrl = 4'b0000;
+        #10;
+        $display("AND Result = %h (Expected 00000000), Zero=%b", Result, Zero);
 
 
-    // ADD
-    A = 8'd10; B = 8'd5;
-    Alu_control = 0; alu_control = 2'b00;
-    #10;
+        ALU_Ctrl = 4'b0001;
+        #10;
+        $display("OR Result = %h (Expected FFFFFFFF), Zero=%b", Result, Zero);
 
-    // SUB (using ~A + B logic)
-    A = 8'd10; B = 8'd5;
-    Alu_control = 1; alu_control = 2'b00;
-    #10;
 
-    // AND
-    A = 8'd12; B = 8'd10;
-    Alu_control = 0; alu_control = 2'b01;
-    #10;
+        A = 32'd10; 
+        B = 32'd20; 
+        ALU_Ctrl = 4'b0010;
+        #10;
+        $display("ADD Result = %d (Expected 30), Zero=%b", Result, Zero);
 
-    // OR
-    A = 8'd12; B = 8'd10;
-    Alu_control = 0; alu_control = 2'b10;
-    #10;
-    A = 8'd0; B = 8'b10110011;
-    Alu_control = 0; alu_control = 2'b11;
-    #10;
 
-    A = 8'd25; B = 8'd17;
-    Alu_control = 0; alu_control = 2'b00; // ADD
-    #10;
+        A = 32'd50; 
+        B = 32'd50; 
+        ALU_Ctrl = 4'b0110;
+        #10;
+        $display("SUB Result = %d (Expected 0), Zero=%b", Result, Zero);
 
-    A = 8'd25; B = 8'd17;
-    Alu_control = 0; alu_control = 2'b01; // AND
-    #10;
 
-    A = 8'd25; B = 8'd17;
-    Alu_control = 0; alu_control = 2'b10; // OR
-    #10;
+        A = 32'd10; 
+        B = 32'd20; 
+        ALU_Ctrl = 4'b0111;
+        #10;
+        $display("SLT Result = %d (Expected 1), Zero=%b", Result, Zero);
 
-    #10;
-    $finish;
 
-end
+        A = 32'd30; 
+        B = 32'd20; 
+        ALU_Ctrl = 4'b0111;
+        #10;
+        $display("SLT Result = %d (Expected 0), Zero=%b", Result, Zero);
+
+ 
+        A = 32'd15; 
+        B = 32'd15; 
+        ALU_Ctrl = 4'b0110; // SUB
+        #10;
+        $display("Zero Test: Result=%d, Zero=%b (Expected Zero=1)", Result, Zero);
+
+
+        ALU_Ctrl = 4'b1111;
+        #10;
+        $display("Default Result = %d (Expected 0)", Result);
+
+        #10;
+        $finish;
+    end
 
 endmodule
