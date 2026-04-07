@@ -1,4 +1,3 @@
-
 module Instruction_memory_2X32(
     input [31:0]read_address,
     output [31:0]instruction_out);
@@ -34,8 +33,7 @@ reg [7:0] memory [511:0];
     memory[15] = 8'b10110000;
     
    end
-    
-    
+
    assign instruction_out = { 
        memory[read_address], 
        memory[read_address+1], 
