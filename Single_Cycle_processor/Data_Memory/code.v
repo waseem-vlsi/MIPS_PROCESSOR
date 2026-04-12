@@ -5,7 +5,30 @@ module Data_Memory(
     output reg [31:0] Read_data
 );
 
-reg [7:0] Data_Memory [0:127];
+reg [7:0] Data_Memory [4095:0];
+
+initial 
+begin
+ Data_Memory[1200] = 8'd0;
+ Data_Memory[1201] = 8'd0;
+ Data_Memory[1202] = 8'd0;
+ Data_Memory[1203] = 8'd1;
+ Data_Memory[1204] = 8'd0;
+ Data_Memory[1205] = 8'd0;
+ Data_Memory[1206] = 8'd0;
+ Data_Memory[1207] = 8'd1;
+ Data_Memory[1208] = 8'd0;
+ Data_Memory[1209] = 8'd0;
+ Data_Memory[1210] = 8'd0;
+ Data_Memory[1211] = 8'd1;
+ Data_Memory[1212] = 8'd0;
+ Data_Memory[1213] = 8'd0;
+ Data_Memory[1214] = 8'd0;
+ Data_Memory[1215] = 8'd0;
+ Data_Memory[1216] = 8'd0;
+ Data_Memory[1217] = 8'd0;
+
+end
 
 // WRITE (sequential)
 always @(posedge clk)
