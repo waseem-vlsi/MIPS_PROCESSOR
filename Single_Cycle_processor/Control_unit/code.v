@@ -61,8 +61,6 @@ end
 
 endmodule
 
-
-
 module ALU_Control (
     input  [1:0] ALUOp,        // From main control unit
     input  [5:0] funct,        // Instruction[5:0]
