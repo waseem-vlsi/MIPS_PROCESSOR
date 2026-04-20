@@ -37,6 +37,7 @@ initial begin
     memory[14] = 8'b00000100;
     memory[15] = 8'b10110000;
 
+    
 memory[16] = 8'b00000001;
 memory[17] = 8'b00101010;
 memory[18] = 8'b01000000;
